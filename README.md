@@ -44,8 +44,7 @@ Walmart-Sales-Data-Analysis/
 
 ### Programming & Analysis
 - Python  
-- Pandas, NumPy  
-- Matplotlib, Seaborn  
+- Pandas 
 - Jupyter Notebook  
 
 ### Database & Querying
