@@ -7,8 +7,10 @@ SELECT * FROM billing_info;
 ALTER TABLE billing_info ADD CONSTRAINT pk_invoice PRIMARY KEY (invoice_id);
 
 
+
 -- total number of branches
 SELECT COUNT(DISTINCT branch) from billing_info;
+
 
 
 -- Business problems
@@ -16,12 +18,15 @@ SELECT COUNT(DISTINCT branch) from billing_info;
 SELECT category, SUM(quantity) AS quantity_sold FROM billing_info GROUP BY category ORDER BY quantity_sold DESC;
 
 
+
 -- 2. Find the number of transactions and total sales via different payment methods
 SELECT payment_method, count(*) AS trans_vol, round(SUM(total), 2) as total_amount FROM billing_info GROUP BY payment_method ORDER BY total_amount DESC;
 
 
+
 -- 3. Calculate total sales based on category
 SELECT category, round(SUM(total),2) AS total_sales FROM billing_info GROUP BY category ORDER BY total_sales DESC; 
+
 
 
 -- 4. Identify the Highest-Rated(avg) Category in Each Branch
@@ -31,6 +36,7 @@ RANK() OVER(PARTITION BY branch ORDER BY AVG(rating) DESC) AS ranks
 FROM billing_info 
 GROUP BY branch, city,category) t
 WHERE ranks = 1;
+
 
 
 -- 5. What is the busiest day of the week for each branch based on transaction volume?
@@ -50,8 +56,10 @@ GROUP BY branch, `day`
 WHERE `rank` = 1;
 
 
+
 -- 6. How many items were sold through each payment method?
  SELECT payment_method, SUM(quantity) AS total_quantity_sold FROM billing_info GROUP BY payment_method;
+
 
 
 -- 7. What are the average, minimum, and maximum ratings for each category in each city?
@@ -63,12 +71,14 @@ FROM billing_info
 GROUP BY city, category;
 
 
+
 -- 8. What is the total profit for each category, ranked from highest to lowest?
 SELECT category, 
 round(sum(total * profit_margin),2) AS profit, 
 DENSE_RANK() OVER(ORDER BY sum(total * profit_margin) DESC) AS `rank`
 FROM billing_info 
 GROUP BY category;
+
 
 
 -- 9. What is the most frequently used payment method in each branch?
@@ -80,6 +90,7 @@ SELECT * FROM (
 	FROM billing_info 
 	GROUP BY branch, payment_method
 ) t WHERE `rank` = 1;
+
 
 
 -- 10. How many transactions occur in each shift (Morning, Afternoon, Evening) across branches?
@@ -100,6 +111,7 @@ COUNT(*) AS no_of_transactions
 FROM billing_info
 GROUP BY branch, shift
 ORDER BY branch, no_of_transactions DESC;
+
 
 
 -- 11. Top 5 branches which experienced the largest decrease in revenue 
